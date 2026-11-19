@@ -1,0 +1,8 @@
+{
+  "name": "cf247-guides-hub-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Car Finance 247 guides hub (Car finance for your situation) design prototype",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}

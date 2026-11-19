@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CF247 Circumstance Hub Prototype</title>
+<style>
+:root{--brand:#6905f2}
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;font-family:Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;background:#fff}
+.viewbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;background:#ece8f6;border-bottom:1px solid #e2ddea}
+.viewbar-label{font-size:14px;font-weight:700;color:#5a566b}
+.seg{display:flex;gap:6px}
+.seg button{font:600 13px Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;min-height:36px;padding:7px 16px;border-radius:999px;border:1px solid #cfc7e3;background:transparent;color:#5a566b;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.seg button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+iframe{flex:1;width:100%;border:0;background:#fff}
+iframe[hidden]{display:none}
+</style></head><body>
+<div class="viewbar" role="group" aria-label="Choose a design to view">
+  <span class="viewbar-label">View</span>
+  <div class="seg">
+    <button type="button" data-view="v1" aria-pressed="false">V1</button>
+    <button type="button" data-view="v2" aria-pressed="true">V2</button>
+  </div>
+</div>
+<iframe id="v1" src="v1/" title="V1" hidden></iframe>
+<iframe id="v2" src="v2/" title="V2"></iframe>
+<script>
+// ?view=v1 or ?view=v2 picks the starting version and is kept in the URL so it can be shared.
+(function () {
+  var views = ['v1', 'v2'];
+  var buttons = document.querySelectorAll('.viewbar [data-view]');
+  function show(v) {
+    views.forEach(function (n) { document.getElementById(n).hidden = n !== v; });
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.view === v)); });
+    try { var u = new URL(location.href); u.searchParams.set('view', v); history.replaceState(null, '', u); } catch (e) {}
+  }
+  buttons.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.view); }); });
+  var start = new URLSearchParams(location.search).get('view');
+  show(views.indexOf(start) > -1 ? start : 'v2');
+})();
+</script>
+</body></html>
